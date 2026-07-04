@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "title": "The Art of Coding",
+    "author": "Alex Mercer",
+    "price": 24.99,
+    "rating": 4.9,
+    "category": "Technology",
+    "coverGradient": "linear-gradient(135deg, #1e1b4b 0%, #311042 100%)"
+  },
+  {
+    "id": 2,
+    "title": "Galactic Horizons",
+    "author": "Elena Rostova",
+    "price": 18.50,
+    "rating": 4.7,
+    "category": "Sci-Fi",
+    "coverGradient": "linear-gradient(135deg, #0f172a 0%, #0369a1 100%)"
+  },
+  {
+    "id": 3,
+    "title": "Quiet Leadership",
+    "author": "Marcus Aurelius",
+    "price": 15.99,
+    "rating": 4.8,
+    "category": "Biography",
+    "coverGradient": "linear-gradient(135deg, #372f25 0%, #1c1917 100%)"
+  },
+  {
+    "id": 4,
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "price": 12.99,
+    "rating": 4.5,
+    "category": "Fiction",
+    "coverGradient": "linear-gradient(135deg, #022c22 0%, #064e3b 100%)"
+  },
+  {
+    "id": 5,
+    "title": "Eloquent JavaScript",
+    "author": "Marijn Haverbeke",
+    "price": 29.99,
+    "rating": 4.8,
+    "category": "Technology",
+    "coverGradient": "linear-gradient(135deg, #451a03 0%, #78350f 100%)"
+  },
+  {
+    "id": 6,
+    "title": "Dune",
+    "author": "Frank Herbert",
+    "price": 19.99,
+    "rating": 4.9,
+    "category": "Sci-Fi",
+    "coverGradient": "linear-gradient(135deg, #2e1065 0%, #4c1d95 100%)"
+  },
+  {
+    "id": 7,
+    "title": "Steve Jobs",
+    "author": "Walter Isaacson",
+    "price": 21.99,
+    "rating": 4.6,
+    "category": "Biography",
+    "coverGradient": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)"
+  },
+  {
+    "id": 8,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "price": 10.99,
+    "rating": 4.4,
+    "category": "Fiction",
+    "coverGradient": "linear-gradient(135deg, #172554 0%, #1e3a8a 100%)"
+  }
+]
