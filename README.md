@@ -1,278 +1,310 @@
-# BookStore Backend API
+# MongoDB Node.js Driver
 
-A comprehensive Node.js/Express backend for an e-commerce bookstore platform with support for multiple user roles (admin, seller, user).
+The official [MongoDB](https://www.mongodb.com/) driver for Node.js.
 
-## 🏗️ Project Structure
+**Upgrading to version 5? Take a look at our [upgrade guide here](https://github.com/mongodb/node-mongodb-native/blob/HEAD/etc/notes/CHANGES_5.0.0.md)!**
 
-```
-BookStore/Backend/
-├── config/
-│   └── connect.js              # MongoDB connection configuration
-├── controllers/
-│   ├── AdminControllers.js      # Admin business logic
-│   ├── SellerControllers.js     # Seller business logic
-│   └── UsersController.js       # User business logic
-├── middlewares/
-│   ├── authMiddleware.js        # JWT authentication & authorization
-│   └── upload.js                # File upload handling with Multer
-├── models/
-│   ├── Admin/
-│   │   └── Admin.js             # Admin schema
-│   ├── Seller/
-│   │   └── Seller.js            # Seller schema
-│   ├── Users/
-│   │   └── User.js              # User schema
-│   ├── Book.js                  # Book schema
-│   ├── Order.js                 # Order schema
-│   ├── Review.js                # Review schema
-│   └── Cart.js                  # Shopping cart schema
-├── routes/
-│   ├── adminRoutes.js           # Admin endpoints
-│   ├── sellerRoutes.js          # Seller endpoints
-│   └── userRoutes.js            # User endpoints
-├── uploads/                     # Uploaded files storage (images, documents)
-├── server.js                    # Main application entry point
-├── package.json                 # Project dependencies
-├── .env.example                 # Environment variables template
-└── README.md                    # This file
-```
+## Quick Links
 
-## 🚀 Quick Start
+| Site                     | Link                                                                                                              |
+| -------------------------| ----------------------------------------------------------------------------------------------------------------- |
+| Documentation            | [www.mongodb.com/docs/drivers/node](https://www.mongodb.com/docs/drivers/node)                                    |
+| API Docs                 | [mongodb.github.io/node-mongodb-native](https://mongodb.github.io/node-mongodb-native)                            |
+| `npm` package            | [www.npmjs.com/package/mongodb](https://www.npmjs.com/package/mongodb)                                            |
+| MongoDB                  | [www.mongodb.com](https://www.mongodb.com)                                                                        |
+| MongoDB University       | [learn.mongodb.com](https://learn.mongodb.com/catalog?labels=%5B%22Language%22%5D&values=%5B%22Node.js%22%5D)     |
+| MongoDB Developer Center | [www.mongodb.com/developer](https://www.mongodb.com/developer/languages/javascript/)                              |
+| Stack Overflow           | [stackoverflow.com](https://stackoverflow.com/search?q=%28%5Btypescript%5D+or+%5Bjavascript%5D+or+%5Bnode.js%5D%29+and+%5Bmongodb%5D) |
+| Source Code              | [github.com/mongodb/node-mongodb-native](https://github.com/mongodb/node-mongodb-native)                          |
+| Upgrade to v5            | [etc/notes/CHANGES_5.0.0.md](https://github.com/mongodb/node-mongodb-native/blob/HEAD/etc/notes/CHANGES_5.0.0.md) |
+| Contributing             | [CONTRIBUTING.md](https://github.com/mongodb/node-mongodb-native/blob/HEAD/CONTRIBUTING.md)                       |
+| Changelog                | [HISTORY.md](https://github.com/mongodb/node-mongodb-native/blob/HEAD/HISTORY.md)                                 |
 
-### 1. Prerequisites
+### Bugs / Feature Requests
 
-- Node.js (v14 or higher)
-- npm or yarn
-- MongoDB (local or Atlas)
+Think you’ve found a bug? Want to see a new feature in `node-mongodb-native`? Please open a
+case in our issue management tool, JIRA:
 
-### 2. Installation
+- Create an account and login [jira.mongodb.org](https://jira.mongodb.org).
+- Navigate to the NODE project [jira.mongodb.org/browse/NODE](https://jira.mongodb.org/browse/NODE).
+- Click **Create Issue** - Please provide as much information as possible about the issue type and how to reproduce it.
 
-```bash
-# Clone or navigate to the project directory
-cd BookStore/Backend
+Bug reports in JIRA for all driver projects (i.e. NODE, PYTHON, CSHARP, JAVA) and the
+Core Server (i.e. SERVER) project are **public**.
 
-# Install dependencies
-npm install
+### Support / Feedback
 
-# Or using yarn
-yarn install
-```
+For issues with, questions about, or feedback for the Node.js driver, please look into our [support channels](https://www.mongodb.com/docs/manual/support). Please do not email any of the driver developers directly with issues or questions - you're more likely to get an answer on the [MongoDB Community Forums](https://community.mongodb.com/tags/c/drivers-odms-connectors/7/node-js-driver).
 
-### 3. Environment Setup
+### Change Log
 
-```bash
-# Copy the environment template
-cp .env.example .env
+Change history can be found in [`HISTORY.md`](https://github.com/mongodb/node-mongodb-native/blob/HEAD/HISTORY.md).
 
-# Edit .env with your configuration
-# Required: MONGODB_URI, JWT_SECRET, PORT
-```
+### Compatibility
 
-### 4. Start the Server
+For version compatibility matrices, please refer to the following links:
+
+- [MongoDB](https://www.mongodb.com/docs/drivers/node/current/compatibility/#mongodb-compatibility)
+- [NodeJS](https://www.mongodb.com/docs/drivers/node/current/compatibility/#language-compatibility)
+
+#### Typescript Version
+
+We recommend using the latest version of typescript, however we currently ensure the driver's public types compile against `typescript@4.1.6`.
+This is the lowest typescript version guaranteed to work with our driver: older versions may or may not work - use at your own risk.
+Since typescript [does not restrict breaking changes to major versions](https://github.com/Microsoft/TypeScript/wiki/Breaking-Changes) we consider this support best effort.
+If you run into any unexpected compiler failures against our supported TypeScript versions please let us know by filing an issue on our [JIRA](https://jira.mongodb.org/browse/NODE).
+
+## Installation
+
+The recommended way to get started using the Node.js 5.x driver is by using the `npm` (Node Package Manager) to install the dependency in your project.
+
+After you've created your own project using `npm init`, you can run:
 
 ```bash
-# Development mode (with auto-reload)
-npm run dev
-
-# Production mode
-npm start
+npm install mongodb
+# or ...
+yarn add mongodb
 ```
 
-Server will run on `http://localhost:5000` (or your configured PORT)
+This will download the MongoDB driver and add a dependency entry in your `package.json` file.
 
-## 📚 API Endpoints
+If you are a Typescript user, you will need the Node.js type definitions to use the driver's definitions:
 
-### Admin Routes (`/api/admin`)
-- Requires: `verifyToken` + `verifyAdmin` middleware
+```sh
+npm install -D @types/node
+```
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/users` | Get all users |
-| PUT | `/users/:userId/approve` | Approve user |
-| GET | `/sellers` | Get all sellers |
-| PUT | `/sellers/:sellerId/approve` | Approve seller |
-| PUT | `/sellers/:sellerId/reject` | Reject seller |
-| GET | `/books` | Get all books for review |
-| PUT | `/books/:bookId/approve` | Approve book |
-| PUT | `/books/:bookId/reject` | Reject book |
-| GET | `/stats` | System statistics |
+## Driver Extensions
 
-### Seller Routes (`/api/seller`)
-- Requires: `verifyToken` + `verifySeller` middleware
+The MongoDB driver can optionally be enhanced by the following feature packages:
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/profile` | Get seller profile |
-| POST | `/books` | Add new book (with image upload) |
-| GET | `/books` | List seller's books |
-| PUT | `/books/:bookId` | Update book details |
-| PATCH | `/books/:bookId/inventory` | Update inventory |
-| DELETE | `/books/:bookId` | Delete book |
-| GET | `/orders` | Get seller's orders |
-| PATCH | `/orders/:orderId/status` | Update order status |
-| GET | `/analytics` | Sales analytics |
+Maintained by MongoDB:
 
-### User Routes (`/api/user`)
-- Some endpoints require `verifyToken` + `verifyUser` middleware
+- Zstd network compression - [@mongodb-js/zstd](https://github.com/mongodb-js/zstd)
+- MongoDB field level and queryable encryption - [mongodb-client-encryption](https://github.com/mongodb/libmongocrypt#readme)
+- GSSAPI / SSPI / Kerberos authentication - [kerberos](https://github.com/mongodb-js/kerberos)
 
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| GET | `/profile` | Get user profile | ✓ |
-| PUT | `/profile` | Update profile | ✓ |
-| GET | `/books` | Browse all books | ✗ |
-| GET | `/books/:bookId` | Get book details | ✗ |
-| GET | `/books/:bookId/reviews` | Get book reviews | ✗ |
-| GET | `/cart` | Get cart | ✓ |
-| POST | `/cart/:bookId` | Add to cart | ✓ |
-| DELETE | `/cart/:bookId` | Remove from cart | ✓ |
-| POST | `/orders` | Place order | ✓ |
-| GET | `/orders` | Get user's orders | ✓ |
-| POST | `/books/:bookId/reviews` | Leave review | ✓ |
+Some of these packages include native C++ extensions.
+Consult the [trouble shooting guide here](https://github.com/mongodb/node-mongodb-native/blob/HEAD/etc/notes/native-extensions.md) if you run into compilation issues.
 
-## 🔒 Authentication
+Third party:
 
-Uses **JWT (JSON Web Tokens)** for authentication:
+- Snappy network compression - [snappy](https://github.com/Brooooooklyn/snappy)
+- AWS authentication - [@aws-sdk/credential-providers](https://github.com/aws/aws-sdk-js-v3/tree/main/packages/credential-providers)
 
-1. **Generate Token**: Login/Register endpoints (not included in this structure)
-2. **Send Token**: Include in `Authorization` header
-3. **Format**: `Bearer <token>`
+## Quick Start
 
-Example:
+This guide will show you how to set up a simple application using Node.js and MongoDB. Its scope is only how to set up the driver and perform the simple CRUD operations. For more in-depth coverage, see the [official documentation](https://www.mongodb.com/docs/drivers/node/).
+
+### Create the `package.json` file
+
+First, create a directory where your application will live.
+
 ```bash
-curl -H "Authorization: Bearer your_jwt_token" http://localhost:5000/api/user/profile
+mkdir myProject
+cd myProject
 ```
 
-## 📤 File Upload
+Enter the following command and answer the questions to create the initial structure for your new project:
 
-Uses **Multer** for file uploads:
+```bash
+npm init -y
+```
 
-- **Supported**: JPEG, PNG, GIF, WebP
-- **Max Size**: 5MB
-- **Location**: `/uploads` directory
-- **Access**: `http://localhost:5000/uploads/filename`
+Next, install the driver as a dependency.
 
-## 🗄️ Database Models
+```bash
+npm install mongodb
+```
 
-### User
-- Profile info, authentication, orders, reviews, wishlist
-- Supports email verification and password reset
+### Start a MongoDB Server
 
-### Seller
-- Business details, books, ratings, sales tracking
-- Status workflow (pending → approved/rejected)
+For complete MongoDB installation instructions, see [the manual](https://www.mongodb.com/docs/manual/installation/).
 
-### Admin
-- Role-based access (superadmin, moderator, support)
-- Granular permissions system
+1. Download the right MongoDB version from [MongoDB](https://www.mongodb.org/downloads)
+2. Create a database directory (in this case under **/data**).
+3. Install and start a `mongod` process.
 
-### Book
-- Title, author, ISBN, category, price
-- Seller reference, ratings, reviews, status tracking
+```bash
+mongod --dbpath=/data
+```
 
-### Order
-- User orders with multiple items from different sellers
-- Payment and shipping information
-- Status tracking
+You should see the **mongod** process start up and print some status information.
 
-### Review
-- Book ratings and comments
-- Helpful/unhelpful counters
-- Verified purchase badges
+### Connect to MongoDB
 
-### Cart
-- User shopping cart with items
-- Subtotal and discount support
+Create a new **app.js** file and add the following code to try out some basic CRUD
+operations using the MongoDB driver.
 
-## 🛠️ Key Features
+Add code to connect to the server and the database **myProject**:
 
-- **Multi-role system** (Admin, Seller, User)
-- **JWT authentication** with role-based access control
-- **File upload handling** with validation
-- **MongoDB integration** with Mongoose
-- **Error handling** middleware
-- **CORS support** for frontend integration
-- **Environment configuration** with dotenv
-- **Request logging** middleware
-- **Comprehensive validation** in schemas
+> **NOTE:** Resolving DNS Connection issues
+>
+> Node.js 18 changed the default DNS resolution ordering from always prioritizing ipv4 to the ordering
+> returned by the DNS provider. In some environments, this can result in `localhost` resolving to
+> an ipv6 address instead of ipv4 and a consequent failure to connect to the server.
+>
+> This can be resolved by:
+>
+> - specifying the ip address family using the MongoClient `family` option (`MongoClient(<uri>, { family: 4 } )`)
+> - launching mongod or mongos with the ipv6 flag enabled ([--ipv6 mongod option documentation](https://www.mongodb.com/docs/manual/reference/program/mongod/#std-option-mongod.--ipv6))
+> - using a host of `127.0.0.1` in place of localhost
+> - specifying the DNS resolution ordering with the `--dns-resolution-order` Node.js command line argument (e.g. `node --dns-resolution-order=ipv4first`)
 
-## 📦 Required Dependencies
+```js
+const { MongoClient } = require('mongodb');
+// or as an es module:
+// import { MongoClient } from 'mongodb'
 
-```json
-{
-  "express": "^4.18.2",
-  "mongoose": "^7.0.0",
-  "jsonwebtoken": "^9.0.0",
-  "multer": "^1.4.5-lts.1",
-  "cors": "^2.8.5",
-  "bcryptjs": "^2.4.3",
-  "dotenv": "^16.0.3"
+// Connection URL
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = 'myProject';
+
+async function main() {
+  // Use connect method to connect to the server
+  await client.connect();
+  console.log('Connected successfully to server');
+  const db = client.db(dbName);
+  const collection = db.collection('documents');
+
+  // the following code examples can be pasted here...
+
+  return 'done.';
+}
+
+main()
+  .then(console.log)
+  .catch(console.error)
+  .finally(() => client.close());
+```
+
+Run your app from the command line with:
+
+```bash
+node app.js
+```
+
+The application should print **Connected successfully to server** to the console.
+
+### Insert a Document
+
+Add to **app.js** the following function which uses the **insertMany**
+method to add three documents to the **documents** collection.
+
+```js
+const insertResult = await collection.insertMany([{ a: 1 }, { a: 2 }, { a: 3 }]);
+console.log('Inserted documents =>', insertResult);
+```
+
+The **insertMany** command returns an object with information about the insert operations.
+
+### Find All Documents
+
+Add a query that returns all the documents.
+
+```js
+const findResult = await collection.find({}).toArray();
+console.log('Found documents =>', findResult);
+```
+
+This query returns all the documents in the **documents** collection.
+If you add this below the insertMany example you'll see the document's you've inserted.
+
+### Find Documents with a Query Filter
+
+Add a query filter to find only documents which meet the query criteria.
+
+```js
+const filteredDocs = await collection.find({ a: 3 }).toArray();
+console.log('Found documents filtered by { a: 3 } =>', filteredDocs);
+```
+
+Only the documents which match `'a' : 3` should be returned.
+
+### Update a document
+
+The following operation updates a document in the **documents** collection.
+
+```js
+const updateResult = await collection.updateOne({ a: 3 }, { $set: { b: 1 } });
+console.log('Updated documents =>', updateResult);
+```
+
+The method updates the first document where the field **a** is equal to **3** by adding a new field **b** to the document set to **1**. `updateResult` contains information about whether there was a matching document to update or not.
+
+### Remove a document
+
+Remove the document where the field **a** is equal to **3**.
+
+```js
+const deleteResult = await collection.deleteMany({ a: 3 });
+console.log('Deleted documents =>', deleteResult);
+```
+
+### Index a Collection
+
+[Indexes](https://www.mongodb.com/docs/manual/indexes/) can improve your application's
+performance. The following function creates an index on the **a** field in the
+**documents** collection.
+
+```js
+const indexName = await collection.createIndex({ a: 1 });
+console.log('index name =', indexName);
+```
+
+For more detailed information, see the [indexing strategies page](https://www.mongodb.com/docs/manual/applications/indexes/).
+
+## Error Handling
+
+If you need to filter certain errors from our driver we have a helpful tree of errors described in [etc/notes/errors.md](https://github.com/mongodb/node-mongodb-native/blob/HEAD/etc/notes/errors.md).
+
+It is our recommendation to use `instanceof` checks on errors and to avoid relying on parsing `error.message` and `error.name` strings in your code.
+We guarantee `instanceof` checks will pass according to semver guidelines, but errors may be sub-classed or their messages may change at any time, even patch releases, as we see fit to increase the helpfulness of the errors.
+
+Any new errors we add to the driver will directly extend an existing error class and no existing error will be moved to a different parent class outside of a major release.
+This means `instanceof` will always be able to accurately capture the errors that our driver throws.
+
+```typescript
+const client = new MongoClient(url);
+await client.connect();
+const collection = client.db().collection('collection');
+
+try {
+  await collection.insertOne({ _id: 1 });
+  await collection.insertOne({ _id: 1 }); // duplicate key error
+} catch (error) {
+  if (error instanceof MongoServerError) {
+    console.log(`Error worth logging: ${error}`); // special case for some reason
+  }
+  throw error; // still want to crash
 }
 ```
 
-## ⚙️ Configuration
+## Nightly releases
 
-### Environment Variables (.env)
+If you need to test with a change from the latest `main` branch our `mongodb` npm package has nightly versions released under the `nightly` tag.
 
-```env
-# Server
-PORT=5000
-NODE_ENV=development
-
-# Database
-MONGODB_URI=mongodb://localhost:27017/bookstore
-
-# Authentication
-JWT_SECRET=your_secret_key
-JWT_EXPIRE=7d
-
-# CORS
-CORS_ORIGIN=http://localhost:3000
+```sh
+npm install mongodb@nightly
 ```
 
-## 🧪 Development Tips
+Nightly versions are published regardless of testing outcome.
+This means there could be sematic breakages or partially implemented features.
+The nightly build is not suitable for production use.
 
-1. **Use Postman or Thunder Client** for API testing
-2. **Check MongoDB** with MongoDB Compass
-3. **Use nodemon** for auto-reload during development
-4. **Validate requests** using Joi or express-validator
-5. **Add tests** using Jest and Supertest
+## Next Steps
 
-## 📝 Next Steps
+- [MongoDB Documentation](https://www.mongodb.com/docs/manual/)
+- [MongoDB Node Driver Documentation](https://www.mongodb.com/docs/drivers/node/)
+- [Read about Schemas](https://www.mongodb.com/docs/manual/core/data-modeling-introduction/)
+- [Star us on GitHub](https://github.com/mongodb/node-mongodb-native)
 
-1. **Implement Authentication Routes**
-   - Register endpoint
-   - Login endpoint
-   - Password reset
-   - Email verification
+## License
 
-2. **Add Validation**
-   - Input validation with Joi/express-validator
-   - Request sanitization
+[Apache 2.0](LICENSE.md)
 
-3. **Enhance Security**
-   - Rate limiting
-   - Input validation
-   - XSS protection
-   - SQL injection prevention
-
-4. **Testing**
-   - Unit tests
-   - Integration tests
-   - API tests
-
-5. **Documentation**
-   - API documentation (Swagger/OpenAPI)
-   - Architecture documentation
-
-## 📄 License
-
-MIT
-
-## 🤝 Contributing
-
-Feel free to contribute improvements to this project!
-
----
-
-**Last Updated**: 2026-07-01
-**Version**: 1.0.0
+© 2012-present MongoDB [Contributors](https://github.com/mongodb/node-mongodb-native/blob/HEAD/CONTRIBUTORS.md) \
+© 2009-2012 Christian Amor Kvalheim
